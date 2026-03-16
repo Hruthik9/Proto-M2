@@ -106,6 +106,14 @@ loader.load('Meshy_AI_biped/Meshy_AI_Character_output.glb', (gltf) => {
 
     scene.add(model);
     mixer = new THREE.AnimationMixer(model);
+    
+    // Extract base idle animation from the character file itself if present
+    if (gltf.animations && gltf.animations.length > 0) {
+        actions['Idle'] = mixer.clipAction(gltf.animations[0]);
+        activeAction = actions['Idle'];
+        activeAction.play();
+    }
+    
     updateProgress();
 
     // Load Animations separately
@@ -146,6 +154,10 @@ function fadeToAction(name, duration = 0.5) {
         btn.classList.remove('active');
         if (btn.dataset.action === name) btn.classList.add('active');
     });
+    
+    // Update the top label UI to show the current animation name
+    const animNameLabel = document.getElementById('anim-name');
+    if(animNameLabel) animNameLabel.innerText = name;
 
     if (name === 'Idle' || !activeAction) {
         if (previousAction) {
@@ -166,15 +178,19 @@ function fadeToAction(name, duration = 0.5) {
 // Button Events
 document.querySelectorAll('.action-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-        const actionName = e.target.dataset.action;
-        fadeToAction(actionName);
-        updateVoiceStatus(`Action: ${actionName}`);
+        // Use currentTarget to ensure we always get the button's data attribute, 
+        // not the child <span> that was clicked.
+        const actionName = e.currentTarget.dataset.action;
+        if(actionName) {
+            fadeToAction(actionName);
+            updateVoiceStatus(`Action: ${actionName}`);
+        }
     });
 });
 
 // Voice Implementation
-const voiceBtn = document.getElementById('voice-btn');
-const voiceStatus = document.getElementById('voice-status');
+const voiceBtn = document.getElementById('voice-orb');
+const voiceStatus = document.getElementById('transcript-text');
 
 function updateVoiceStatus(text) {
     voiceStatus.innerText = text;
@@ -205,7 +221,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     recognition.onstart = () => {
         isListening = true;
         voiceBtn.classList.add('listening');
-        voiceBtn.querySelector('span').innerText = 'Listening...';
+        // We removed the inner span modifying logic, as the orb is purely SVG
         updateVoiceStatus('Listening... Say "Walk", "Run", or "Crouch"');
     };
 
@@ -217,16 +233,16 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
         if (command.includes('walk')) {
             fadeToAction('Walking');
-            updateVoiceStatus('Command recognized: Walking');
+            updateVoiceStatus('Walking');
         } else if (command.includes('run')) {
             fadeToAction('Running');
-            updateVoiceStatus('Command recognized: Running');
+            updateVoiceStatus('Running');
         } else if (command.includes('crouch') || command.includes('pick') || command.includes('down')) {
             fadeToAction('Crouch');
-            updateVoiceStatus('Command recognized: Crouch');
+            updateVoiceStatus('Crouch');
         } else if (command.includes('stop') || command.includes('idle')) {
             fadeToAction('Idle');
-            updateVoiceStatus('Command recognized: Idle');
+            updateVoiceStatus('Idle');
         } else {
             updateVoiceStatus(`Unrecognized: "${command}"`);
         }
@@ -237,13 +253,11 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         updateVoiceStatus(`Error: ${event.error}`);
         isListening = false;
         voiceBtn.classList.remove('listening');
-        voiceBtn.querySelector('span').innerText = 'Enable Voice';
     };
 
     recognition.onend = () => {
         isListening = false;
         voiceBtn.classList.remove('listening');
-        voiceBtn.querySelector('span').innerText = 'Enable Voice';
     };
 } else {
     voiceBtn.addEventListener('click', () => {

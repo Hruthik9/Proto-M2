@@ -3,52 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proto M2 | Clean Minimal 3D Visualization</title>
+    <title>Proto M2 | Hyper-Realistic 3D Visualization</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="loader">
-        <div class="loader-content">
-            <h1 class="logo">PROTO M2</h1>
-            <div class="progress-bar-container">
-                <div id="progress-bar"></div>
-            </div>
-            <p>Loading Asset <span id="loading-text"></span>...</p>
-        </div>
+        <div class="loader-brand">Proto · M2</div>
+        <div class="bar-wrap"><div class="bar" id="progress-bar"></div></div>
+        <div class="loader-txt" id="loading-text">Initialising</div>
     </div>
 
     <div id="canvas-container">
         <canvas id="canvas3d"></canvas>
 
-        <div id="ui-overlay">
-            <div class="header">
-                <h2>AI Avatar Interactive</h2>
-                <p>Voice & Touch Controlled</p>
+        <!-- New Translucent UI Overlay Structure -->
+        <div id="topbar">
+            <div class="brand">Proto · M2</div>
+            <div class="status-pill">
+                <div class="dot"></div>
+                <div class="status-text" id="status-text">Ready</div>
             </div>
+        </div>
 
-            <div class="controls-container">
-                <div class="actions">
-                    <button class="action-btn active" data-action="Idle">Idle</button>
-                    <button class="action-btn" data-action="Walking">Walk</button>
-                    <button class="action-btn" data-action="Running">Run</button>
-                    <button class="action-btn" data-action="Crouch">Crouch</button>
-                </div>
-                
-                <div class="voice-controls">
-                    <div id="voice-status" class="voice-status">Say "Walk", "Run", "Crouch" or "Stop"</div>
-                    <button id="voice-btn" class="voice-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
-                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                            <line x1="12" y1="19" x2="12" y2="23"></line>
-                            <line x1="8" y1="23" x2="16" y2="23"></line>
-                        </svg>
-                        <span>Enable Voice</span>
-                    </button>
-                </div>
+        <div id="anim-label">
+            <div id="anim-name">Idle</div>
+            <div id="anim-tag">tap a button or speak a command</div>
+        </div>
+
+        <div id="transcript-wrap"><span id="transcript-text" class="voice-status"></span></div>
+
+        <button id="voice-orb" class="voice-btn">
+            <svg class="mic-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="2" width="6" height="12" rx="3"/>
+                <path d="M5 10a7 7 0 0 0 14 0"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+                <line x1="9"  y1="21" x2="15" y2="21"/>
+            </svg>
+        </button>
+
+        <div class="voice-hint">Say: idle · walk · run · crouch</div>
+
+        <div id="bottom-panel">
+            <div class="panel-label">Animations</div>
+            <div id="btn-grid">
+                <button class="anim-btn action-btn active" data-action="Idle">
+                    <span class="btn-icon">🧘</span>
+                    <span class="btn-label">Idle</span>
+                    <span class="btn-sub">standby</span>
+                </button>
+                <button class="anim-btn action-btn" data-action="Walking">
+                    <span class="btn-icon">🚶</span>
+                    <span class="btn-label">Walk</span>
+                    <span class="btn-sub">stroll</span>
+                </button>
+                <button class="anim-btn action-btn" data-action="Running">
+                    <span class="btn-icon">🏃</span>
+                    <span class="btn-label">Run</span>
+                    <span class="btn-sub">sprint</span>
+                </button>
+                <button class="anim-btn action-btn" data-action="Crouch">
+                    <span class="btn-icon">🤲</span>
+                    <span class="btn-label">Crouch</span>
+                    <span class="btn-sub">pick up</span>
+                </button>
+                <button class="anim-btn disabled"><span class="btn-icon">＋</span><span class="btn-label">Soon</span><span class="btn-sub">coming</span></button>
+                <button class="anim-btn disabled"><span class="btn-icon">＋</span><span class="btn-label">Soon</span><span class="btn-sub">coming</span></button>
             </div>
         </div>
     </div>
