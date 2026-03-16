@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proto M2 | Clean Minimal 3D Visualization</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loader">
+        <div class="loader-content">
+            <h1 class="logo">PROTO M2</h1>
+            <div class="progress-bar-container">
+                <div id="progress-bar"></div>
+            </div>
+            <p>Loading Asset <span id="loading-text"></span>...</p>
+        </div>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="canvas3d"></canvas>
+
+        <div id="ui-overlay">
+            <div class="header">
+                <h2>AI Avatar Interactive</h2>
+                <p>Voice & Touch Controlled</p>
+            </div>
+
+            <div class="controls-container">
+                <div class="actions">
+                    <button class="action-btn active" data-action="Idle">Idle</button>
+                    <button class="action-btn" data-action="Walking">Walk</button>
+                    <button class="action-btn" data-action="Running">Run</button>
+                    <button class="action-btn" data-action="Crouch">Crouch</button>
+                </div>
+                
+                <div class="voice-controls">
+                    <div id="voice-status" class="voice-status">Say "Walk", "Run", "Crouch" or "Stop"</div>
+                    <button id="voice-btn" class="voice-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                        <span>Enable Voice</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+          }
+        }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
